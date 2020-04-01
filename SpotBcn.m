@@ -1,9 +1,9 @@
-function [outputArg1] = SpotBcn(numBlockVert,numBlockHor)
+function [outputArg1] = SpotBcn(fileName, numBlockVert,numBlockHor)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-imageOG=imread('base.jpg');
+imageOG=imread(fileName);
 image=double(imageOG);
-figure,imshow(uint8(image))
+% figure,imshow(uint8(image))
 
 Image_red = image(:,:,1);
 Image_green = image(:,:,2);
@@ -150,12 +150,12 @@ image(:,:,2) = Image_green;
 image(:,:,3) = Image_blue;
 
 
-figure; imshow(uint8(255*image));
-
-% histogram(image, nBins)
-histogram(Image_red(:,:)*255, 50), title('Histograma Red')
-histogram(Image_blue(:,:)*255, 50), title('Histograma Blue')
-histogram(Image_green(:,:)*255, 50), title('Histograma Green')
+% figure; imshow(uint8(255*image));
+% 
+% % histogram(image, nBins)
+% histogram(Image_red(:,:)*255, 50), title('Histograma Red')
+% histogram(Image_blue(:,:)*255, 50), title('Histograma Blue')
+% histogram(Image_green(:,:)*255, 50), title('Histograma Green')
 
 
 outputArg1 = blocksBarsa;
