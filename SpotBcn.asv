@@ -3,7 +3,7 @@ function [outputArg1] = SpotBcn(fileName, numBlockVert,numBlockHor)
 %   Detailed explanation goes here
 imageOG=imread(fileName);
 image=double(imageOG);
-% figure,imshow(uint8(image))
+figure,imshow(uint8(image))
 
 Image_red = image(:,:,1);
 Image_green = image(:,:,2);
@@ -70,16 +70,14 @@ for i = 1:numBlocksHoritzonal
               NormalizedGreen = NormalizedGreen*255;
               NormalizedBlue = NormalizedBlue*255;
               
-              if (abs(NormalizedRed - NormalizedGreen) < 25)
-                  if (abs(NormalizedBlue - NormalizedGreen) < 25)
-                      Image_red(y,x) = rand;
-                      Image_green(y,x) = rand;
-                      Image_blue(y,x) = rand;
-
-                      NormalizedRed = Image_red(y,x)*255;
-                      NormalizedGreen = Image_green(y,x)*255;
-                      NormalizedBlue = Image_blue(y,x)*255;
-                  end
+              if (abs(NormalizedRed - NormalizedGreen) < 5)
+                  Image_red(y,x) = rand;
+                  Image_green(y,x) = rand;
+                  Image_blue(y,x) = rand;
+              
+                  NormalizedRed = NormalizedRed*255;
+                    NormalizedGreen = NormalizedGreen*255;
+                  NormalizedBlue = NormalizedBlue*255;
               end
               
               indexRed = uint8(NormalizedRed/5);
@@ -127,7 +125,7 @@ for i = 1:numBlocksHoritzonal
                if (abs(maxRedLeft - maxIndexRedLeft) < tolerance)
                    if (abs(maxBlueRight - maxIndexBlueRight) < tolerance)
                        if (abs(maxRedRight - maxIndexRedRight) < tolerance)
-                           blocksBarsa = blocksBarsa + 1;
+                           blocksBarsa = blocksBarsa + 1
                        end
                    end
                end
@@ -136,10 +134,10 @@ for i = 1:numBlocksHoritzonal
         end
         
 % %         Descomentar per veure com genera els blocks
-%          image(:,:,1) = Image_red;
-%          image(:,:,2) = Image_green;
-%          image(:,:,3) = Image_blue;
-%          
+         image(:,:,1) = Image_red;
+         image(:,:,2) = Image_green;
+         image(:,:,3) = Image_blue;
+         
 %          figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));
 %             
 %          figure; histogram(Image_red(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Red')
@@ -158,7 +156,7 @@ image(:,:,2) = Image_green;
 image(:,:,3) = Image_blue;
 
 
-%  figure; imshow(uint8(255*image));
+ figure; imshow(uint8(255*image));
 % 
 % % histogram(image, nBins)
 % histogram(Image_red(:,:)*255, 50), title('Histograma Red')
