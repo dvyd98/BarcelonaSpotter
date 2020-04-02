@@ -1,7 +1,8 @@
 function [outputArg1] = SpotBcn(fileName, numBlockVert,numBlockHor)
+
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-imageOG=imread('base.jpg');
+imageOG=imread(fileName);
 image=double(imageOG);
 %figure,imshow(uint8(image))
 
@@ -11,8 +12,8 @@ Image_blue = image(:,:,3);
 
 [row,col] = size(image(:,:,1));
 
-numBlocksVertical = 6;
-numBlocksHoritzonal = 3;
+numBlocksVertical = numBlockVert;
+numBlocksHoritzonal = numBlockHor;
 totalBlocks = numBlocksHoritzonal*numBlocksVertical;
 rowSize = uint32(row/numBlocksVertical) - 1;
 colSize = uint32(col/numBlocksHoritzonal) - 1;
@@ -119,7 +120,7 @@ for i = 1:numBlocksHoritzonal
                if (abs(maxRedLeft - maxIndexRedLeft) < tolerance)
                    if (abs(maxBlueRight - maxIndexBlueRight) < tolerance)
                        if (abs(maxRedRight - maxIndexRedRight) < tolerance)
-                           blocksBarsa = blocksBarsa + 1;
+%                            blocksBarsa = blocksBarsa + 1;
                        end
                    end
                end
@@ -133,21 +134,43 @@ for i = 1:numBlocksHoritzonal
          image(:,:,3) = Image_blue;
          
                  
-        i1=image(startcol:endcol,startrow:endrow,1);
+        i1=image(startrow:endrow,startcol:endcol,1);
+%         figure; imshow(i1)
         [c1,n]=imhist(i1);
         c1=c1/size(i1,1)/size(i1,2);
         
-        i2=load('modelImage.mat');
-        i2=i2(51:101,65:97,1);
+        mat=load('imgRed.mat');
+        i2 = mat.Image_red;
+        i2=i2(65:97,51:101);
+%         figure; imshow(i2)
         [c2,n2]=imhist(i2);
         c2=c2/size(i2,1)/size(i2,2);
-        d=pdist2(c1',c2','chisq');
+        disRed=pdist2(c1',c2');
+        
+        i1=image(startrow:endrow,startcol:endcol,3);
+%         figure; imshow(i1)
+        [c1,n]=imhist(i1);
+        c1=c1/size(i1,1)/size(i1,2);
+        
+        mat=load('imgBlue.mat');
+        i2 = mat.Image_blue;
+        i2=i2(65:97,51:101);
+%         figure; imshow(i2)
+        [c2,n2]=imhist(i2);
+        c2=c2/size(i2,1)/size(i2,2);
+        disBlue=pdist2(c1',c2');
+        
+        if (disRed < 0.15)
+            if (disBlue < 0.15)
+                blocksBarsa = blocksBarsa + 1;
+            end
+        end
          
-        figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));
+%         figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));
             
-         figure; histogram(Image_red(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Red')
-         figure; histogram(Image_blue(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Blue')
-         figure; histogram(Image_green(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Green')
+%          figure; histogram(Image_red(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Red')
+%          figure; histogram(Image_blue(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Blue')
+%          figure; histogram(Image_green(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Green')
      end
 end
 
@@ -170,5 +193,8 @@ image(:,:,3) = Image_blue;
 
 
 outputArg1 = blocksBarsa;
+
+
+
 end
 
