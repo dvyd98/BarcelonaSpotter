@@ -3,7 +3,7 @@ function [outputArg1] = SpotBcn(fileName, numBlockVert,numBlockHor)
 %   Detailed explanation goes here
 imageOG=imread(fileName);
 image=double(imageOG);
-% figure,imshow(uint8(image))
+%figure,imshow(uint8(image))
 
 Image_red = image(:,:,1);
 Image_green = image(:,:,2);
@@ -14,8 +14,8 @@ Image_blue = image(:,:,3);
 numBlocksVertical = numBlockVert;
 numBlocksHoritzonal = numBlockHor;
 totalBlocks = numBlocksHoritzonal*numBlocksVertical;
-rowSize = uint32(row/numBlocksVertical);
-colSize = uint32(col/numBlocksHoritzonal);
+rowSize = uint32(row/numBlocksVertical) - 1;
+colSize = uint32(col/numBlocksHoritzonal) - 1;
 pixelsBlock = rowSize * colSize;
 
 endrow = uint32(row*8);
@@ -35,22 +35,18 @@ vectorRed = zeros([52 1]);
 
 for i = 1:numBlocksHoritzonal
     for j = 1:numBlocksVertical
-        startrow = j*rowSize - rowSize -1;
-        startcol = i*colSize - colSize -1;
-        if (i == 1)
-            startcol = i*colSize - colSize + 1;
-        end
-        if (j == 1)
-            startrow = j*rowSize - rowSize + 1;
-        end
-        endrow = startrow + rowSize -1;
-        endcol = startcol + colSize -1;
+        startrow = j*rowSize - rowSize + 1;
+        startcol = i*colSize - colSize + 1;
+        endrow = startrow + rowSize;
+        endcol = startcol + colSize;
+        
         if (i == numBlocksHoritzonal)
-            endcol = endcol - 1;
+            endcol = col;
         end
         if (j == numBlocksVertical)
-            endrow = endrow - 1;
+            endrow = row;
         end
+        
         vectorRed = zeros([52 1]);
         vectorGreen = zeros([52 1]);
         vectorBlue = zeros([52 1]);
