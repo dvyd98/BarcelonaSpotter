@@ -23,6 +23,7 @@ endrow = uint32(row*8);
 endcol = uint32(col*5);
 
 isBarsaImatge = 0;
+moltGris = 0;
 isBarsaBlock = 1;
 blocksBarsa = 0;
 maxRedLeft = 7;
@@ -52,6 +53,7 @@ for i = 1:numBlocksHoritzonal
         vectorGreen = zeros([52 1]);
         vectorBlue = zeros([52 1]);
         isBarsaBlock = 1;
+        moltGris = 0;
         
         for y = startrow:endrow 
             for x = startcol:endcol 
@@ -71,6 +73,18 @@ for i = 1:numBlocksHoritzonal
               NormalizedGreen = NormalizedGreen*255;
               NormalizedBlue = NormalizedBlue*255;
               
+              if (abs(NormalizedRed - NormalizedGreen) < 25)
+                  if (abs(NormalizedBlue - NormalizedGreen) < 25)
+                      Image_red(y,x) = 255;
+                      Image_green(y,x) = 255;
+                      Image_blue(y,x) = 255;
+
+                      NormalizedRed = 255;
+                      NormalizedGreen = 255;
+                      NormalizedBlue = 255;
+                  end
+              end
+              
               indexRed = uint8(NormalizedRed/5);
               indexRed = indexRed + 1;
               vectorRed(indexRed) = vectorRed(indexRed) + 1;
@@ -86,46 +100,73 @@ for i = 1:numBlocksHoritzonal
               
             end
         end
-        [maxim, maxIndexRed] = max(vectorRed);
-        [maxim, maxIndexGreen] = max(vectorGreen);
-        [maxim, maxIndexBlue] = max(vectorBlue);
+        
+        [maxElementRed, maxIndexRed] = max(vectorRed(1:end-1));
+        [maxElementGreen, maxIndexGreen] = max(vectorGreen(1:end-1));
+        [maxElementBlue, maxIndexBlue] = max(vectorBlue(1:end-1));
         
         if (abs(maxIndexBlue - maxIndexRed) < 2)
           if (abs(maxIndexBlue - maxIndexGreen) < 2)
-              isBarsaBlock = 0;
+              moltGris = 0;
           end
         end
         
-        for ii = 1:52
-            
-        end
-        
-        if (isBarsaBlock == 1)
+        if (moltGris == 0)
             vectorBlueLeft = vectorBlue(1:26);
-            vectorBlueRight = vectorBlue(27:end);
+            vectorBlueRight = vectorBlue(27:end-1);
             
             vectorRedLeft = vectorRed(1:26);
-            vectorRedRight = vectorRed(27:end);
+            vectorRedRight = vectorRed(27:end-1);
             
-            [maxim, maxIndexRedLeft] = max(vectorRedLeft);
-            [maxim, maxIndexRedRight] = max(vectorRedRight);
+            [maxElementRedLeft, maxIndexRedLeft] = max(vectorRedLeft);
+            [maxElementRedRight, maxIndexRedRight] = max(vectorRedRight);
             
-            [maxim, maxIndexBlueLeft] = max(vectorBlueLeft);
-            [maxim, maxIndexBlueRight] = max(vectorBlueRight);
+            [maxElementBlueLeft, maxIndexBlueLeft] = max(vectorBlueLeft);
+            [maxElementBlueRight, maxIndexBlueRight] = max(vectorBlueRight);
             
             maxIndexBlueRight = maxIndexBlueRight + 26;
             maxIndexRedRight = maxIndexRedRight + 26;
-            tolerance = 5;
-            if (abs(maxBlueLeft - maxIndexBlueLeft) < tolerance)
-               if (abs(maxRedLeft - maxIndexRedLeft) < tolerance)
-                   if (abs(maxBlueRight - maxIndexBlueRight) < tolerance)
-                       if (abs(maxRedRight - maxIndexRedRight) < tolerance)
-%                            blocksBarsa = blocksBarsa + 1;
-                       end
-                   end
-               end
-            end
             
+            tolerance = 6;
+            threshold = 100;
+            if (maxElementBlueLeft > threshold && maxElementBlueRight > threshold)
+                if (maxElementRedLeft > threshold && maxElementRedRight > threshold)
+                    if (abs(maxBlueLeft - maxIndexBlueLeft) < tolerance)
+                       if (abs(maxRedLeft - maxIndexRedLeft) < tolerance)
+                           if (abs(maxBlueRight - maxIndexBlueRight) < tolerance)
+                               if (abs(maxRedRight - maxIndexRedRight) < tolerance)
+                                   blocksBarsa = blocksBarsa + 1
+                               end
+                           end
+                       end
+                    end
+                end
+            end
+%         else
+%             vectorBlueLeft = vectorBlue(1:26);
+%             vectorBlueRight = vectorBlue(27:end);
+%             
+%             vectorRedLeft = vectorRed(1:26);
+%             vectorRedRight = vectorRed(27:end);
+%             
+%             [maxim, maxIndexRedLeft] = max(vectorRedLeft);
+%             [maxim, maxIndexRedRight] = max(vectorRedRight);
+%             
+%             [maxim, maxIndexBlueLeft] = max(vectorBlueLeft);
+%             [maxim, maxIndexBlueRight] = max(vectorBlueRight);
+%             
+%             maxIndexBlueRight = maxIndexBlueRight + 26;
+%             maxIndexRedRight = maxIndexRedRight + 26;
+%             tolerance = 5;
+%             if (abs(maxBlueLeft - maxIndexBlueLeft) < tolerance)
+%                if (abs(maxRedLeft - maxIndexRedLeft) < tolerance)
+%                    if (abs(maxBlueRight - maxIndexBlueRight) < tolerance)
+%                        if (abs(maxRedRight - maxIndexRedRight) < tolerance)
+%                            blocksBarsa = blocksBarsa + 1
+%                        end
+%                    end
+%                end
+%             end
         end
         
 % %         Descomentar per veure com genera els blocks
@@ -133,41 +174,9 @@ for i = 1:numBlocksHoritzonal
          image(:,:,2) = Image_green;
          image(:,:,3) = Image_blue;
          
-                 
-        i1=image(startrow:endrow,startcol:endcol,1);
-%         figure; imshow(i1)
-        [c1,n]=imhist(i1);
-        c1=c1/size(i1,1)/size(i1,2);
-        
-        mat=load('imgRed.mat');
-        i2 = mat.Image_red;
-        i2=i2(65:97,51:101);
-%         figure; imshow(i2)
-        [c2,n2]=imhist(i2);
-        c2=c2/size(i2,1)/size(i2,2);
-        disRed=pdist2(c1',c2');
-        
-        i1=image(startrow:endrow,startcol:endcol,3);
-%         figure; imshow(i1)
-        [c1,n]=imhist(i1);
-        c1=c1/size(i1,1)/size(i1,2);
-        
-        mat=load('imgBlue.mat');
-        i2 = mat.Image_blue;
-        i2=i2(65:97,51:101);
-%         figure; imshow(i2)
-        [c2,n2]=imhist(i2);
-        c2=c2/size(i2,1)/size(i2,2);
-        disBlue=pdist2(c1',c2');
-        
-        if (disRed < 0.15)
-            if (disBlue < 0.15)
-                blocksBarsa = blocksBarsa + 1;
-            end
-        end
          
-%         figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));
-            
+       % figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));
+%             
 %          figure; histogram(Image_red(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Red')
 %          figure; histogram(Image_blue(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Blue')
 %          figure; histogram(Image_green(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Green')
@@ -193,6 +202,8 @@ image(:,:,3) = Image_blue;
 
 
 outputArg1 = blocksBarsa;
+
+
 
 
 
