@@ -75,9 +75,9 @@ for i = 1:numBlocksHoritzonal
               
               if (abs(NormalizedRed - NormalizedGreen) < 25)
                   if (abs(NormalizedBlue - NormalizedGreen) < 25)
-                      Image_red(y,x) = 255;
-                      Image_green(y,x) = 255;
-                      Image_blue(y,x) = 255;
+                      Image_red(y,x) = nan;
+                      Image_green(y,x) = nan;
+                      Image_blue(y,x) = nan;
 
                       NormalizedRed = 255;
                       NormalizedGreen = 255;
@@ -112,10 +112,10 @@ for i = 1:numBlocksHoritzonal
         end
         
         if (moltGris == 0)
-            vectorBlueLeft = vectorBlue(1:26);
+            vectorBlueLeft = vectorBlue(2:26);
             vectorBlueRight = vectorBlue(27:end-1);
             
-            vectorRedLeft = vectorRed(1:26);
+            vectorRedLeft = vectorRed(2:26);
             vectorRedRight = vectorRed(27:end-1);
             
             [maxElementRedLeft, maxIndexRedLeft] = max(vectorRedLeft);
@@ -128,7 +128,7 @@ for i = 1:numBlocksHoritzonal
             maxIndexRedRight = maxIndexRedRight + 26;
             
             tolerance = 6;
-            threshold = 100;
+            threshold = 50;
             if (maxElementBlueLeft > threshold && maxElementBlueRight > threshold)
                 if (maxElementRedLeft > threshold && maxElementRedRight > threshold)
                     if (abs(maxBlueLeft - maxIndexBlueLeft) < tolerance)
@@ -175,7 +175,7 @@ for i = 1:numBlocksHoritzonal
          image(:,:,3) = Image_blue;
          
          
-       % figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));
+%         figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));
 %             
 %          figure; histogram(Image_red(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Red')
 %          figure; histogram(Image_blue(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Blue')
@@ -193,7 +193,7 @@ image(:,:,2) = Image_green;
 image(:,:,3) = Image_blue;
 
 
-% figure; imshow(uint8(255*image));
+ % figure; imshow(uint8(255*image));
 % 
 % % histogram(image, nBins)
 % histogram(Image_red(:,:)*255, 50), title('Histograma Red')
@@ -202,6 +202,8 @@ image(:,:,3) = Image_blue;
 
 
 outputArg1 = blocksBarsa;
+
+
 
 
 
