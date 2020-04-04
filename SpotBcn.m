@@ -147,6 +147,12 @@ for i = 1:numBlocksHoritzonal
         c2=c2/size(i2,1)/size(i2,2);
         disRed=pdist2(c1',c2');
         
+        i2 = mat.Image_red;
+        i2=i2(33:65,51:101);
+        [c2,n2]=imhist(i2);
+        c2=c2/size(i2,1)/size(i2,2);
+        disRed2=pdist2(c1',c2');
+        
         i1=image(startrow:endrow,startcol:endcol,3);
 %         figure; imshow(i1)
         [c1,n]=imhist(i1);
@@ -160,11 +166,29 @@ for i = 1:numBlocksHoritzonal
         c2=c2/size(i2,1)/size(i2,2);
         disBlue=pdist2(c1',c2');
         
-        if (disRed < 0.15)
-            if (disBlue < 0.15)
+        i2 = mat.Image_blue;
+        i2=i2(33:65,51:101);
+%         figure; imshow(i2)
+        [c2,n2]=imhist(i2);
+        c2=c2/size(i2,1)/size(i2,2);
+        disBlue2=pdist2(c1',c2');
+        
+        
+        
+        threshold = 0.10;
+        
+        if (disRed < threshold)
+            if (disBlue < threshold)
                 blocksBarsa = blocksBarsa + 1;
             end
+        else
+            if (disRed2 < threshold)
+                if (disBlue2 < threshold)
+                    blocksBarsa = blocksBarsa + 1;
+                end
+            end
         end
+        
          
 %         figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));
             
