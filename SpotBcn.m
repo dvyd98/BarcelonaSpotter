@@ -1,4 +1,4 @@
-function [outputArg1] = SpotBcn(fileName, numBlockVert,numBlockHor)
+function [outputArg1] = SpotBcn(fileName, numBlockVert,numBlockHor, thresh)
 
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
@@ -128,7 +128,7 @@ for i = 1:numBlocksHoritzonal
             maxIndexRedRight = maxIndexRedRight + 26;
             
             tolerance = 6;
-            threshold = 50;
+            threshold = thresh;
             if (maxElementBlueLeft > threshold && maxElementBlueRight > threshold)
                 if (maxElementRedLeft > threshold && maxElementRedRight > threshold)
                     if (abs(maxBlueLeft - maxIndexBlueLeft) < tolerance)
