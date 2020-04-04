@@ -91,7 +91,7 @@ for i = 1:numBlocksHoritzonal
               
               indexBlue = uint8(NormalizedBlue/5);
               indexBlue = indexBlue + 1;
-              vectorBlue(indexBlue) = vectorRed(indexBlue) + 1;
+              vectorBlue(indexBlue) = vectorBlue(indexBlue) + 1;
               
               indexGreen = uint8(NormalizedGreen/5);
               indexGreen = indexGreen + 1;
