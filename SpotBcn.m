@@ -86,54 +86,11 @@ for i = 1:numBlocksHoritzonal
               
             end
         end
-        [maxim, maxIndexRed] = max(vectorRed);
-        [maxim, maxIndexGreen] = max(vectorGreen);
-        [maxim, maxIndexBlue] = max(vectorBlue);
         
-        if (abs(maxIndexBlue - maxIndexRed) < 2)
-          if (abs(maxIndexBlue - maxIndexGreen) < 2)
-              isBarsaBlock = 0;
-          end
-        end
-        
-        for ii = 1:52
-            
-        end
-        
-        if (isBarsaBlock == 1)
-            vectorBlueLeft = vectorBlue(1:26);
-            vectorBlueRight = vectorBlue(27:end);
-            
-            vectorRedLeft = vectorRed(1:26);
-            vectorRedRight = vectorRed(27:end);
-            
-            [maxim, maxIndexRedLeft] = max(vectorRedLeft);
-            [maxim, maxIndexRedRight] = max(vectorRedRight);
-            
-            [maxim, maxIndexBlueLeft] = max(vectorBlueLeft);
-            [maxim, maxIndexBlueRight] = max(vectorBlueRight);
-            
-            maxIndexBlueRight = maxIndexBlueRight + 26;
-            maxIndexRedRight = maxIndexRedRight + 26;
-            tolerance = 5;
-            if (abs(maxBlueLeft - maxIndexBlueLeft) < tolerance)
-               if (abs(maxRedLeft - maxIndexRedLeft) < tolerance)
-                   if (abs(maxBlueRight - maxIndexBlueRight) < tolerance)
-                       if (abs(maxRedRight - maxIndexRedRight) < tolerance)
-%                            blocksBarsa = blocksBarsa + 1;
-                       end
-                   end
-               end
-            end
-            
-        end
-        
-% %         Descomentar per veure com genera els blocks
          image(:,:,1) = Image_red;
          image(:,:,2) = Image_green;
          image(:,:,3) = Image_blue;
-         
-                 
+                
         i1=image(startrow:endrow,startcol:endcol,1);
 %         figure; imshow(i1)
         [c1,n]=imhist(i1);
@@ -172,9 +129,7 @@ for i = 1:numBlocksHoritzonal
         [c2,n2]=imhist(i2);
         c2=c2/size(i2,1)/size(i2,2);
         disBlue2=pdist2(c1',c2');
-        
-        
-        
+           
         threshold = 0.125;
         
         if (disRed < threshold)
@@ -189,18 +144,12 @@ for i = 1:numBlocksHoritzonal
             end
         end
         
-         
-%         figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));
-            
+% %         Descomentar per veure com genera els blocks
+%          figure; imshow(uint8(255*image(startrow:endrow,startcol:endcol,:)));            
 %          figure; histogram(Image_red(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Red')
 %          figure; histogram(Image_blue(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Blue')
 %          figure; histogram(Image_green(startrow:endrow,startcol:endcol)*255, 50), title('Histograma Green')
      end
-end
-
-
-if (blocksBarsa/totalBlocks > 0.25) 
-    isBarsaImatge = 1;
 end
 
 image(:,:,1) = Image_red;
@@ -215,10 +164,7 @@ image(:,:,3) = Image_blue;
 % histogram(Image_blue(:,:)*255, 50), title('Histograma Blue')
 % histogram(Image_green(:,:)*255, 50), title('Histograma Green')
 
-
 outputArg1 = blocksBarsa;
-
-
 
 end
 
