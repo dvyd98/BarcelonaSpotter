@@ -66,24 +66,7 @@ for i = 1:numBlocksHoritzonal
               Image_red(y,x) = NormalizedRed;
               Image_green(y,x) = NormalizedGreen;
               Image_blue(y,x) = NormalizedBlue;
-              
-              NormalizedRed = NormalizedRed*255;
-              NormalizedGreen = NormalizedGreen*255;
-              NormalizedBlue = NormalizedBlue*255;
-              
-              indexRed = uint8(NormalizedRed/5);
-              indexRed = indexRed + 1;
-              vectorRed(indexRed) = vectorRed(indexRed) + 1;
-              
-              indexBlue = uint8(NormalizedBlue/5);
-              indexBlue = indexBlue + 1;
-              vectorBlue(indexBlue) = vectorBlue(indexBlue) + 1;
-              
-              indexGreen = uint8(NormalizedGreen/5);
-              indexGreen = indexGreen + 1;
-              vectorGreen(indexGreen) = vectorGreen(indexGreen) + 1;
-              
-              
+
             end
         end
         
