@@ -101,73 +101,37 @@ for i = 1:numBlocksHoritzonal
             end
         end
         
-        [maxElementRed, maxIndexRed] = max(vectorRed(1:end-1));
-        [maxElementGreen, maxIndexGreen] = max(vectorGreen(1:end-1));
-        [maxElementBlue, maxIndexBlue] = max(vectorBlue(1:end-1));
-        
-        if (abs(maxIndexBlue - maxIndexRed) < 2)
-          if (abs(maxIndexBlue - maxIndexGreen) < 2)
-              moltGris = 0;
-          end
-        end
-        
-        if (moltGris == 0)
-            vectorBlueLeft = vectorBlue(2:26);
-            vectorBlueRight = vectorBlue(27:end-1);
-            
-            vectorRedLeft = vectorRed(2:26);
-            vectorRedRight = vectorRed(27:end-1);
-            
-            [maxElementRedLeft, maxIndexRedLeft] = max(vectorRedLeft);
-            [maxElementRedRight, maxIndexRedRight] = max(vectorRedRight);
-            
-            [maxElementBlueLeft, maxIndexBlueLeft] = max(vectorBlueLeft);
-            [maxElementBlueRight, maxIndexBlueRight] = max(vectorBlueRight);
-            
-            maxIndexBlueRight = maxIndexBlueRight + 26;
-            maxIndexRedRight = maxIndexRedRight + 26;
-            
-            tolerance = tol;
-            threshold = thresh;
-            if (maxElementBlueLeft > threshold && maxElementBlueRight > threshold)
-                if (maxElementRedLeft > threshold && maxElementRedRight > threshold)
-                    if (abs(maxBlueLeft - maxIndexBlueLeft) < tolerance)
-                       if (abs(maxRedLeft - maxIndexRedLeft) < tolerance)
-                           if (abs(maxBlueRight - maxIndexBlueRight) < tolerance)
-                               if (abs(maxRedRight - maxIndexRedRight) < tolerance)
-                                   blocksBarsa = blocksBarsa + 1
-                               end
+        vectorBlueLeft = vectorBlue(2:26);
+        vectorBlueRight = vectorBlue(27:end-1);
+
+        vectorRedLeft = vectorRed(2:26);
+        vectorRedRight = vectorRed(27:end-1);
+
+        [maxElementRedLeft, maxIndexRedLeft] = max(vectorRedLeft);
+        [maxElementRedRight, maxIndexRedRight] = max(vectorRedRight);
+
+        [maxElementBlueLeft, maxIndexBlueLeft] = max(vectorBlueLeft);
+        [maxElementBlueRight, maxIndexBlueRight] = max(vectorBlueRight);
+
+        maxIndexBlueRight = maxIndexBlueRight + 26;
+        maxIndexRedRight = maxIndexRedRight + 26;
+
+        tolerance = tol;
+        threshold = thresh;
+        if (maxElementBlueLeft > threshold && maxElementBlueRight > threshold)
+            if (maxElementRedLeft > threshold && maxElementRedRight > threshold)
+                if (abs(maxBlueLeft - maxIndexBlueLeft) < tolerance)
+                   if (abs(maxRedLeft - maxIndexRedLeft) < tolerance)
+                       if (abs(maxBlueRight - maxIndexBlueRight) < tolerance)
+                           if (abs(maxRedRight - maxIndexRedRight) < tolerance)
+                               blocksBarsa = blocksBarsa + 1
                            end
                        end
-                    end
+                   end
                 end
             end
-%         else
-%             vectorBlueLeft = vectorBlue(1:26);
-%             vectorBlueRight = vectorBlue(27:end);
-%             
-%             vectorRedLeft = vectorRed(1:26);
-%             vectorRedRight = vectorRed(27:end);
-%             
-%             [maxim, maxIndexRedLeft] = max(vectorRedLeft);
-%             [maxim, maxIndexRedRight] = max(vectorRedRight);
-%             
-%             [maxim, maxIndexBlueLeft] = max(vectorBlueLeft);
-%             [maxim, maxIndexBlueRight] = max(vectorBlueRight);
-%             
-%             maxIndexBlueRight = maxIndexBlueRight + 26;
-%             maxIndexRedRight = maxIndexRedRight + 26;
-%             tolerance = 5;
-%             if (abs(maxBlueLeft - maxIndexBlueLeft) < tolerance)
-%                if (abs(maxRedLeft - maxIndexRedLeft) < tolerance)
-%                    if (abs(maxBlueRight - maxIndexBlueRight) < tolerance)
-%                        if (abs(maxRedRight - maxIndexRedRight) < tolerance)
-%                            blocksBarsa = blocksBarsa + 1
-%                        end
-%                    end
-%                end
-%             end
         end
+        
         
 % %         Descomentar per veure com genera els blocks
          image(:,:,1) = Image_red;
